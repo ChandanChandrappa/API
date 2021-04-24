@@ -4,9 +4,77 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProcedureDiagnosisGrid.Views"
+        xmlns:helpers="clr-namespace:ProcedureDiagnosisGrid.Helpers"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
-        Title="AddDiagnosisView" Height="450" Width="800">
+        ResizeMode="NoResize"
+        Title="AddDiagnosisView" Height="500" Width="400">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0"
+                Content="Add Diagnosis"
+                Width="Auto"
+                Style="{StaticResource StandardActionButtonPrimary}" 
+                Margin="15,8,260,8"/>
+        <DataGrid Grid.Row="1"
+                  Margin="15"
+                  AlternatingRowBackground="AliceBlue"
+                  ColumnHeaderStyle="{StaticResource AceTableHeaderNoSorting }"
+                  GridLinesVisibility="None"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserSortColumns="False"
+                  ItemsSource="{Binding Diags}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Diagnosis"
+                                    Binding="{Binding DiagnosisCodeId}"
+                                    Width="100">
+
+                </DataGridTextColumn>
+                <DataGridComboBoxColumn Header="Present on Admisson"
+                                        ItemsSource="{Binding Source={helpers:EnumBindingSource {x:Type helpers:Status}}}"
+                                        SelectedItemBinding="{Binding poa}">
+
+                </DataGridComboBoxColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Name="HoverActionContainer"
+                                  Width="Auto"
+                                  HorizontalAlignment="Right"
+                                  Panel.ZIndex="1">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}},
+                                                                                   Path=IsMouseOver}"
+                                                         Value="True">
+                                                <Setter Property="Visibility" 
+                                                        Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Border Width="{Binding ElementName=HoverActionContainer,
+                                                                Path=ActualWidth}"
+                                        HorizontalAlignment="Right"
+                                        Style="{StaticResource HoverActionContainer}" />
+                                <Button Margin="8,2"
+                                        Style="{StaticResource HiddenActionButtonIcon}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}},
+                                                           Path=DataContext.RequestDeleteCommand}"
+                                        CommandParameter="{Binding}"
+                                        Content="{StaticResource icon-delete}" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
