@@ -55,11 +55,9 @@ namespace ProcedureDiagnosisGrid.Helpers
 
     public enum Status
     {
-        Horrible,
-        Bad,
-        SoSo,
-        Good,
-        Better,
-        Best
+        none,
+        Preset,
+        notpresent,
+
     }
 }

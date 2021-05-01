@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Prism.Commands;
+using ProcedureDiagnosisGrid.Helpers;
 using ProcedureDiagnosisGrid.Models;
 
 namespace ProcedureDiagnosisGrid.ViewModels
@@ -24,7 +27,39 @@ namespace ProcedureDiagnosisGrid.ViewModels
 
             Diags = _proc.Diagnoses;
 
+            AddDiagnosisCommand = new DelegateCommand(AddDiagnosisClicked);
+            EditCommand = new DelegateCommand<object>((obj) => EditClicked(obj));
+            DeleteCommand = new DelegateCommand<object>((obj) => DeleteClicked(obj));
+
         }
+
+        private void DeleteClicked(object parm)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void EditClicked(object parm)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AddDiagnosisClicked()
+        {
+            MessageBox.Show("Open Diagnosis Select Popup");
+        }
+
+        public DelegateCommand AddDiagnosisCommand { get; private set; }
+        public DelegateCommand<object> EditCommand { get; private set; }
+        public DelegateCommand<object> DeleteCommand { get; private set; }
+
+        private Status _status;
+
+        public Status Status
+        {
+            get { return _status; }
+            set { _status = value; }
+        }
+
 
         private Procedure _proc;
 
